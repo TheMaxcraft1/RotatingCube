@@ -11,13 +11,13 @@ clock = pygame.time.Clock()
 
 cube_points = [
                 [[-1],[-1],[-1]], #P0 Every "inside" list is a column
-                [[-1],[1],[-1]],  #P1
-                [[1],[-1],[-1]],  #P2
-                [[1],[1],[-1]],   #P3
+                [[1],[-1],[-1]],  #P1
+                [[1],[1],[-1]],  #P2
+                [[-1],[1],[-1]],   #P3
                 [[-1],[-1],[1]],  #P4   # Geogebra link https://www.geogebra.org/3d/kmyj3azc 
-                [[-1],[1],[1]],   #P5
-                [[1],[-1],[1]],   #P6
-                [[1],[1],[1]]     #P7
+                [[1],[-1],[1]],   #P5
+                [[1],[1],[1]],   #P6
+                [[-1],[1],[1]]     #P7
 ]
 
 
@@ -27,6 +27,30 @@ projection_matrix = [
                         [0,1,0],
                         [0,0,0]
                     ]
+
+
+def rX_matrix():
+    return              [
+                        [1,0,0],
+                        [0,math.cos(angle), -math.sin(angle)],
+                        [0,math.sin(angle), math.cos(angle)]
+                        ]
+
+def rY_matrix():
+    return              [
+                        [math.cos(angle),0,math.sin(angle)],
+                        [0,1,0],
+                        [-math.sin(angle),0,math.cos(angle)]    
+                        ]
+
+def rZ_matrix():
+    return              [
+                        [math.cos(angle),-math.sin(angle),0],
+                        [math.sin(angle), math.cos(angle),0],
+                        [0,0,1]
+                        ]
+    
+
 
 def connectPoints(i, j, points):
     pygame.draw.line(window, (255,255,255), (points[i][0], points[i][1]), (points[j][0], points[j][1]))
@@ -61,23 +85,12 @@ while True:
     window.fill((0,0,0))
     angle += 0.01
     
-    rotationX_matrix =  [
-                        [1,0,0],
-                        [0,math.cos(angle), -math.sin(angle)],
-                        [0,math.sin(angle), math.cos(angle)]
-                        ]
+    #Rotation Matrixes
+    rotationX_matrix = rX_matrix()
+    rotationY_matrix = rY_matrix()
+    rotationZ_matrix = rZ_matrix()
+    
 
-    rotationY_matrix =  [
-                        [math.cos(angle),0,math.sin(angle)],
-                        [0,1,0],
-                        [-math.sin(angle),0,math.cos(angle)]    
-                        ]
-
-    rotationZ_matrix =   [
-                        [math.cos(angle),-math.sin(angle),0],
-                        [math.sin(angle), math.cos(angle),0],
-                        [0,0,1]
-                        ]
     
     points = [0 for _ in range(len(cube_points))]
     i = 0
@@ -97,28 +110,11 @@ while True:
 
         pygame.draw.circle(window, (50, 205, 50), (x, y), 5)
 
-
-    
-    connectPoints(0,1, points)
-    connectPoints(0,2, points)
-    connectPoints(4,5, points)
-    connectPoints(4,6, points)
-    
-    
-    connectPoints(1,3, points)
-    connectPoints(2,3, points)
-    connectPoints(5,7, points)
-    connectPoints(7,6, points)
-
-
-
-    connectPoints(0,4, points)
-    connectPoints(1,5, points)
-    connectPoints(2,6, points)
-    connectPoints(3,7, points)
-  
-
-
+    # Connecting points with lines 
+    for i in range(4):
+        connectPoints(i, (i+1)%4, points)
+        connectPoints(i+4, ((i+1)%4)+4, points)
+        connectPoints(i, i+4, points)
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
