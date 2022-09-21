@@ -26,11 +26,11 @@ def Cube():
 
 def Pyramid():
     return  [  
-                [[0],[0],[2]],    #P0
-                [[1],[1],[0]],    #P1
-                [[1],[-1],[0]],   #P2       # Geogebra link https://www.geogebra.org/3d/ca5fsvqn
-                [[-1],[-1],[0]],   #P3
-                [[-1],[1],[0]]   #P4
+                [[1],[1],[0]],    #P0
+                [[1],[-1],[0]],   #P1       # Geogebra link https://www.geogebra.org/3d/ca5fsvqn
+                [[-1],[-1],[0]],   #P2
+                [[-1],[1],[0]],   #P3
+                [[0],[0],[2]]    #P4
             ]
 
 
@@ -139,14 +139,10 @@ while True:
     """
     # Connecting points with lines (Pyramid)
     for i in range(4):
-        connectPoints(i+1,0, points)
-        connectPoints(i+1,(i+2)%5, points)
-
-        if(i == 3):
-            connectPoints(4,1,points)
+        connectPoints(i,4, points)
+        connectPoints(i,(i+1)%4, points)
 
 
-    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
