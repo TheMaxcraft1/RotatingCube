@@ -92,7 +92,7 @@ def matrix_multiplication(a,b):
         print("No se pueden multiplicar :(")
 
 
-scale = 100
+SCALE = 100
 #Main Loop
 while True:
     clock.tick(60)
@@ -122,8 +122,8 @@ while True:
         
         point2D = matrix_multiplication(p_matrix, rotate_z)
 
-        x = (point2D[0][0] * scale) + WIDTH/2
-        y = (point2D[1][0] * scale) + HEIGHT/2
+        x = (point2D[0][0] * SCALE) + WIDTH/2
+        y = (point2D[1][0] * SCALE) + HEIGHT/2
 
         points[i] = (x,y)
         i += 1
