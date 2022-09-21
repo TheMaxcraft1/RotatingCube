@@ -35,7 +35,8 @@ def Pyramid():
 
 
 
-projection_matrix = [
+def projection_matrix():
+    return          [
                         [1,0,0],
                         [0,1,0],
                         [0,0,0]
@@ -98,6 +99,9 @@ while True:
     window.fill((0,0,0))
     angle += 0.01
     
+    #Projection Matrix
+    p_matrix = projection_matrix()
+
     #Rotation Matrixes
     rotationX_matrix = rX_matrix()
     rotationY_matrix = rY_matrix()
@@ -116,7 +120,7 @@ while True:
         rotate_y = matrix_multiplication(rotationY_matrix, rotate_x)
         rotate_z = matrix_multiplication(rotationZ_matrix, rotate_y)
         
-        point2D = matrix_multiplication(projection_matrix, rotate_z)
+        point2D = matrix_multiplication(p_matrix, rotate_z)
 
         x = (point2D[0][0] * scale) + WIDTH/2
         y = (point2D[1][0] * scale) + HEIGHT/2
