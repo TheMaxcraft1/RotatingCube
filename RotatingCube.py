@@ -9,8 +9,12 @@ angle = 0
 window = pygame.display.set_mode(RESOLUTION)
 clock = pygame.time.Clock()
 
-cube_points = [
-                [[-1],[-1],[-1]], #P0 Every "inside" list is a column
+
+
+
+def Cube():
+    return  [
+                [[-1],[-1],[-1]], #P0 
                 [[1],[-1],[-1]],  #P1
                 [[1],[1],[-1]],  #P2
                 [[-1],[1],[-1]],   #P3
@@ -18,7 +22,16 @@ cube_points = [
                 [[1],[-1],[1]],   #P5
                 [[1],[1],[1]],   #P6
                 [[-1],[1],[1]]     #P7
-]
+            ]
+
+def Pyramid():
+    return  [  
+                [[0],[0],[2]],    #P0
+                [[1],[1],[0]],    #P1
+                [[1],[-1],[0]],   #P2       # Geogebra link https://www.geogebra.org/3d/ca5fsvqn
+                [[-1],[-1],[0]],   #P3
+                [[-1],[1],[0]]   #P4
+            ]
 
 
 
@@ -90,12 +103,15 @@ while True:
     rotationY_matrix = rY_matrix()
     rotationZ_matrix = rZ_matrix()
     
-
+    #3D Shape
+    #shape_points = Cube()  #Cube
+    shape_points = Pyramid() #Pyramid
     
-    points = [0 for _ in range(len(cube_points))]
+
+    points = [0 for _ in range(len(shape_points))]
     i = 0
 
-    for point in cube_points:
+    for point in shape_points:
         rotate_x = matrix_multiplication(rotationX_matrix, point)    #It doesn't matter in what order, but you've to multiply all
         rotate_y = matrix_multiplication(rotationY_matrix, rotate_x)
         rotate_z = matrix_multiplication(rotationZ_matrix, rotate_y)
@@ -110,11 +126,22 @@ while True:
 
         pygame.draw.circle(window, (50, 205, 50), (x, y), 5)
 
-    # Connecting points with lines 
+    # Connecting points with lines (CUBE)
+    """
     for i in range(4):
         connectPoints(i, (i+1)%4, points)
         connectPoints(i+4, ((i+1)%4)+4, points)
         connectPoints(i, i+4, points)
+    """
+    # Connecting points with lines (Pyramid)
+    for i in range(4):
+        connectPoints(i+1,0, points)
+        connectPoints(i+1,(i+2)%5, points)
+
+        if(i == 3):
+            connectPoints(4,1,points)
+
+
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
